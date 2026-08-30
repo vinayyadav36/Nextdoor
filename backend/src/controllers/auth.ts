@@ -36,8 +36,12 @@ export const clerkSync = asyncHandler(async (req: Request, res: Response) => {
   const clerkClient = createClerkClient({ secretKey: env.clerkSecretKey })
   let claims: { sub?: string }
   try {
-    claims = await verifyToken(sessionToken, { secretKey: env.clerkSecretKey })
-  } catch {
+    claims = await verifyToken(sessionToken, {
+      secretKey: env.clerkSecretKey,
+      authorizedParties: env.corsOrigin,
+    })
+  } catch (err: any) {
+    console.error('Clerk token verification failed:', err)
     throw new ApiError(401, 'Invalid or expired Clerk session token')
   }
 
