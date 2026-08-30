@@ -316,7 +316,7 @@ export const createChannel = asyncHandler(async (req: Request, res: Response) =>
 })
 
 export const verifyChannelPin = asyncHandler(async (req: Request, res: Response) => {
-  const userId = requireUserId(req)
+  requireUserId(req)
   const { pin } = parseBody(req, z.object({ pin: z.string() }))
   
   const channel = channelRepository.findById(req.params.id)

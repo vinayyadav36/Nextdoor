@@ -265,7 +265,7 @@ export const addReview = asyncHandler(async (req: Request, res: Response) => {
   })
 
   // Recalculate average rating
-  const updatedBusiness = businessRepository.updateRating(business.id)!
+  businessRepository.updateRating(business.id)
 
   const user = userRepository.findById(userId)
   if (user) {

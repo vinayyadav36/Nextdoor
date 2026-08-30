@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import { userRepository } from '../database/repositories/userRepository'
 import { verifyToken } from '../utils/jwt'
-import { ApiError, asyncHandler } from '../utils/errors'
+import { ApiError } from '../utils/errors'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

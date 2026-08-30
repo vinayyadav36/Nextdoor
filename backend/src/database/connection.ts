@@ -437,11 +437,7 @@ export function runMigrations(): void {
       : `INSERT OR IGNORE INTO users (id, email, name, password_hash, role, points, created_at, updated_at)
          VALUES ('super_admin_id', ?, 'Super Admin', '', 'admin', 0, datetime('now'), datetime('now'))`
 
-    if (isPg) {
-      database.prepare(insertAdminSql).run(emailNorm)
-    } else {
-      database.prepare(insertAdminSql).run(emailNorm)
-    }
+    database.prepare(insertAdminSql).run(emailNorm)
     console.log(`[db init] Verified/created Super Admin user with email: ${emailNorm}`)
 
     // Ensure Super Admin is member of all existing circles
@@ -532,9 +528,7 @@ export function runMigrations(): void {
   }
 
   // Ensure Surrounding Forest and Wildlife Areas exist
-  const countJhabuaSql = isPg
-    ? "SELECT COUNT(*) as count FROM buildings WHERE name = 'Jhabua Reserve Forest & Wildlife Area'"
-    : "SELECT COUNT(*) as count FROM buildings WHERE name = 'Jhabua Reserve Forest & Wildlife Area'"
+  const countJhabuaSql = "SELECT COUNT(*) as count FROM buildings WHERE name = 'Jhabua Reserve Forest & Wildlife Area'"
   const jhabuaExists = database.prepare(countJhabuaSql).get() as any
   const jCountVal = jhabuaExists?.count ?? jhabuaExists?.countVal ?? 0
 

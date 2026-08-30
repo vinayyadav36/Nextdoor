@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import type { Request, Response } from 'express'
-import { ApiError, asyncHandler } from '../utils/errors'
+import { asyncHandler } from '../utils/errors'
 import { env } from '../config/env'
 
 const routeSchema = z.object({
