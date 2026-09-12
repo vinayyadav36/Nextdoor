@@ -5,7 +5,21 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+const envObj = import.meta.env as Record<string, any>
+const anyClerkKey = Object.entries(envObj).find(
+  ([k, v]) =>
+    typeof v === 'string' &&
+    v.startsWith('pk_') &&
+    k.toUpperCase().includes('CLERK')
+)?.[1] as string | undefined
+
+const PUBLISHABLE_KEY =
+  envObj.VITE_CLERK_PUBLISHABLE_KEY ||
+  envObj.Vite_CLERK_PUBLISHABLE_KEY ||
+  envObj.Vite_CLERK_PUBILSHABLE_KEY ||
+  envObj.VITE_CLERK_PUBILSHABLE_KEY ||
+  envObj.CLERK_PUBLISHABLE_KEY ||
+  anyClerkKey
 
 if (!PUBLISHABLE_KEY) {
   createRoot(document.getElementById('root')!).render(

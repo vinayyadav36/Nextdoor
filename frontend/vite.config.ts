@@ -4,9 +4,35 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'node:path'
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
+  const rootDir = path.resolve(import.meta.dirname, '..')
+  const env = { ...loadEnv(mode, rootDir, ''), ...loadEnv(mode, process.cwd(), '') }
+
+  const clerkKey =
+    process.env.VITE_CLERK_PUBLISHABLE_KEY ||
+    process.env.Vite_CLERK_PUBLISHABLE_KEY ||
+    process.env.Vite_CLERK_PUBILSHABLE_KEY ||
+    process.env.VITE_CLERK_PUBILSHABLE_KEY ||
+    process.env.CLERK_PUBLISHABLE_KEY ||
+    env.VITE_CLERK_PUBLISHABLE_KEY ||
+    env.Vite_CLERK_PUBLISHABLE_KEY ||
+    env.Vite_CLERK_PUBILSHABLE_KEY ||
+    env.VITE_CLERK_PUBILSHABLE_KEY ||
+    env.CLERK_PUBLISHABLE_KEY ||
+    Object.entries({ ...process.env, ...env }).find(
+      ([k, v]) =>
+        typeof v === 'string' &&
+        v.startsWith('pk_') &&
+        k.toUpperCase().includes('CLERK')
+    )?.[1] ||
+    ''
 
   return {
+    define: clerkKey
+      ? {
+          'import.meta.env.VITE_CLERK_PUBLISHABLE_KEY': JSON.stringify(clerkKey),
+        }
+      : {},
+    envPrefix: ['VITE_', 'Vite_', 'NEXT_PUBLIC_'],
     plugins: [
       react(),
       VitePWA({
