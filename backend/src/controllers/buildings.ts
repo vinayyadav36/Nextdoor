@@ -62,7 +62,10 @@ export const createBuilding = asyncHandler(async (req: Request, res: Response) =
   }
   const data = parseBody(req, createBuildingSchema)
   const b = buildingRepository.create({
-    ...data,
+    name: data.name,
+    type: data.type,
+    address: data.address,
+    services: data.services,
     timings: data.timings ?? undefined,
     contact: data.contact ?? undefined,
     description: data.description ?? undefined,

@@ -25,7 +25,7 @@ export interface Business {
   address: string
   phone: string
   whatsapp: string | null
-  hours: Record<string, { open: string; close: string }>
+  hours: Record<string, { open?: string; close?: string }>
   photos: string[]
   attributes: { parking: boolean; cards: boolean; homeDelivery: boolean }
   ownerId: string | null

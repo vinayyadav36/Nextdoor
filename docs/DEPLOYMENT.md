@@ -1,21 +1,21 @@
-# Deployment & Free OTP Email — Nextdoor Rewari
+ eployment & Free OTP Email — Nextdoor Rewari
 
-This app is a **hyperlocal community platform for Rewari** (28.1928°N, 76.6186°E). It is
+This app is a hyperlocal community platform for Rewari** (28.1928°N, 76.6186°E). It is
 self-hosted end-to-end — the frontend is a React 19 + Vite 8 SPA and the backend is an
 Express + better-sqlite3 REST API. There is **no Appwrite dependency** anymore; the older
 `docs/APPWRITE_SETUP.md` and `docs/VERCEL_DEPLOYMENT.md` are outdated and can be ignored.
 
-**Every circle and channel is PIN-protected. Every write action requires a logged-in
-user.** Logins are passwordless via email OTP (free tier options below). Business
+Every circle and channel is PIN-protected. Every write action requires a logged-in
+user. Logins are passwordless via email OTP (free tier options below). Business
 listings/ratings are readable by anyone; posting, reviewing, joining circles, messaging,
 and nearby sync all require login.
 
-**Profile privacy:** every user gets a public profile at `/users/:id`. Regular users see
+*Profile privacy:** every user gets a public profile at `/users/:id`. Regular users see
 other users' profiles **masked** — email is partially hidden and post/chat content shows
 as `xxxx`. Only the account owner and the super admin (`role: admin`) can view the full
 timeline and complete chat history.
 
-## Architecture
+ rchitecture
 
 ```
 frontend/  React 19 + Vite 8 + PWA (offline-first via IndexedDB)
@@ -31,7 +31,7 @@ also persisted to SQLite (with `expires_at` for expiring messages) so chat histo
 timelines survive server restarts. The SQLite DB holds users, posts, messages, comments,
 businesses, reviews, circles, channels, buildings, and emergency contacts.
 
-## 1. Local development
+ . Local development
 
 ```bash
 # install workspace deps (root has npm workspaces)
@@ -52,11 +52,11 @@ npm run dev                 # SPA on http://localhost:5173
 Open `http://localhost:5173`. In dev the email provider defaults to `console`, so the
 OTP is printed in the **backend terminal** — use it to log in.
 
-## 2. Free email OTP — choose one provider
+ . Free email OTP — choose one provider
 
 Set `EMAIL_PROVIDER` in `backend/.env` to one of:
 
-### A. Resend (recommended, free 3,000 emails/month)
+A. Resend (recommended, free 3,000 emails/month)
 1. Sign up at https://resend.com, add a domain (or use the default `onboarding@resend.dev`).
 2. Create an API key at https://resend.com/api-keys.
 3. Configure:
@@ -68,7 +68,7 @@ Set `EMAIL_PROVIDER` in `backend/.env` to one of:
    If you add your own domain, set `MAIL_FROM=Nextdoor Rewari <no-reply@yourdomain.com>`.
 4. Restart the backend.
 
-### B. Gmail SMTP (free, 500/day) — App Password
+B. Gmail SMTP (free, 500/day) — App Password
 1. Enable 2-Step Verification on the Google account, then create an App Password at
    https://myaccount.google.com/apppasswords.
 2. Configure:
@@ -83,7 +83,7 @@ Set `EMAIL_PROVIDER` in `backend/.env` to one of:
    ```
 3. Restart the backend.
 
-### C. Console (development only)
+C. Console (development only)
 ```env
 EMAIL_PROVIDER=console
 ```
@@ -92,7 +92,7 @@ OTPs print to the backend terminal. Never use this in production.
 > The `/api/auth/otp/request` endpoint is rate-limited to 5 requests per 15 minutes per
 > IP, and each email has a 60-second resend cooldown.
 
-## 3. Backend environment variables
+ . Backend environment variables
 
 | Variable | Description | Example |
 |----------|-------------|---------|
@@ -132,7 +132,7 @@ OTPs print to the backend terminal. Never use this in production.
 There are **no demo credentials** — login is always email OTP. `SEED_ADMIN_EMAIL` is only
 bumped to admin when the seed runs and that email is missing.
 
-## 4b. Clerk (email-OTP sign-in) setup
+ b. Clerk (email-OTP sign-in) setup
 
 The frontend uses Clerk for passwordless email OTP sign-in; the backend verifies the
 Clerk session JWT with `@clerk/backend` and mints the app JWT from the verified user.
@@ -153,9 +153,9 @@ Clerk session JWT with `@clerk/backend` and mints the app JWT from the verified 
 > builds — a stale PWA showing the old login flow is a common cause of "still seeing dev
 > OTP".
 
-## 5. Production deployment
+ . Production deployment
 
-### Frontend → Vercel
+ Frontend → Vercel
 1. Import the repo, set **Root Directory** to `frontend`, Framework Preset `Vite`,
    Build Command `npm run build`, Output Directory `dist`.
 2. Add env var `VITE_API_URL=https://<your-backend-url>` for Production/Preview.
@@ -174,14 +174,13 @@ Clerk session JWT with `@clerk/backend` and mints the app JWT from the verified 
 5. In production the backend also serves the built frontend from `frontend/dist` if it
    exists, so a single Render service can serve both — but the standard setup is
    Vercel (frontend) + Render (API).
-
-### Build verification
+ Build verification
 ```bash
 cd backend && npm run build && npm start    # verify it boots
 cd frontend && npm run build                 # zero TS errors + dist output
 ```
 
-## 6. Manual testing checklist
+ . Manual testing checklist
 
 - [ ] OTP email arrives (Resend/SMTP) and login works; wrong OTP blocked after 5 tries
 - [ ] `POST /api/posts` without a token returns 401; with token returns 201
@@ -197,7 +196,7 @@ cd frontend && npm run build                 # zero TS errors + dist output
 - [ ] `GET /api/admin/users` works only for `role: admin` (403/401 otherwise)
 - [ ] Posts and messages survive a backend restart (persisted in SQLite)
 
-## 7. Troubleshooting
+ . Troubleshooting
 
 | Issue | Fix |
 |-------|-----|

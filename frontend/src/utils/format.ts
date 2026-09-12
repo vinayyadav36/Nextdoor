@@ -33,8 +33,10 @@ export function haversineKm(a: { lat: number; lng: number }, b: { lat: number; l
 
 export { REWARI_CENTER } from '@/config'
 
-export function todayHours(hours: Record<string, { open: string; close: string }> | undefined): { open: string; close: string } | null {
+export function todayHours(hours: Record<string, { open?: string; close?: string }> | undefined): { open: string; close: string } | null {
   if (!hours) return null
   const day = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
-  return hours[day] ?? null
+  const today = hours[day]
+  if (!today || !today.open || !today.close) return null
+  return { open: today.open, close: today.close }
 }

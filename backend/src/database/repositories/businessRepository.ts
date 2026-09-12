@@ -27,7 +27,7 @@ export interface Business {
   address: string
   phone: string
   whatsapp: string | null
-  hours: Record<string, { open: string; close: string }>
+  hours: Record<string, { open?: string; close?: string }>
   photos: string[]
   attributes: { parking: boolean; cards: boolean; homeDelivery: boolean }
   owner_id: string | null
@@ -55,7 +55,7 @@ export interface CreateBusinessInput {
   address: string
   phone: string
   whatsapp?: string
-  hours?: Record<string, { open: string; close: string }>
+  hours?: Record<string, { open?: string; close?: string }>
   photos?: string[]
   attributes?: { parking: boolean; cards: boolean; homeDelivery: boolean }
   owner_id?: string
@@ -77,7 +77,7 @@ export interface UpdateBusinessInput {
   address?: string
   phone?: string
   whatsapp?: string
-  hours?: Record<string, { open: string; close: string }>
+  hours?: Record<string, { open?: string; close?: string }>
   photos?: string[]
   attributes?: { parking: boolean; cards: boolean; homeDelivery: boolean }
   owner_id?: string | null
