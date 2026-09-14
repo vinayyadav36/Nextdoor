@@ -97,7 +97,7 @@ export default function Register() {
                 type="text"
                 required
                 className="input"
-                placeholder="John Doe"
+                placeholder="SALTEDHASH"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -130,7 +130,7 @@ export default function Register() {
         ) : (
           <form onSubmit={handleVerifyOtp} className="space-y-4">
             <div className="rounded border border-indigo-100 bg-indigo-50/50 p-2.5 text-xs text-indigo-800 leading-normal">
-              📧 Clerk has dispatched a real OTP verification code to <strong>{email}</strong>. Please check your inbox.
+              📧 We have Securely dispatched Your  verification code to <strong>{email}</strong>. Please check your inbox.
             </div>
             <div>
               <label className="mb-1 block text-sm font-semibold text-slate-700" htmlFor="otp">

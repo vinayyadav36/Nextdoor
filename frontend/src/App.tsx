@@ -109,11 +109,15 @@ export default function App() {
   const online = useOnline()
 
   useEffect(() => {
-    appwriteClient.ping().then(() => {
-      console.log('[appwrite] Setup successfully verified via ping response')
-    }).catch((err) => {
-      console.error('[appwrite] Setup ping failed:', err)
-    })
+    try {
+      appwriteClient.ping().then(() => {
+        console.log('[appwrite] Setup successfully verified via ping response')
+      }).catch((err) => {
+        console.warn('[appwrite] Setup ping failed (non-fatal):', err)
+      })
+    } catch (err) {
+      console.warn('[appwrite] Setup ping threw synchronously (non-fatal):', err)
+    }
   }, [])
 
   return (
